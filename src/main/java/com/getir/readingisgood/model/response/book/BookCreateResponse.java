@@ -1,6 +1,6 @@
-package com.getir.readingisgood.model.response.customer;
+package com.getir.readingisgood.model.response.book;
 
-import com.getir.readingisgood.enums.Constants;
+import com.getir.readingisgood.dto.BookDTO;
 import com.getir.readingisgood.model.response.BaseResponse;
 import lombok.Data;
 import lombok.Getter;
@@ -12,13 +12,12 @@ import java.util.Map;
 
 @Getter
 @Setter
-public class CustomerLoginResponse extends BaseResponse {
-
+public class BookCreateResponse extends BaseResponse {
     private Map<String,Object> data;
 
-    public CustomerLoginResponse(String message, String token){
+    public BookCreateResponse(String message, BookDTO book){
         super(message);
-        this.data = Map.of("token", Constants.JWT_TOKEN_TYPE + " " + token);
+        this.data = Map.of("book", book);
         this.setStatus(HttpStatus.OK);
         this.setSuccess(true);
     }

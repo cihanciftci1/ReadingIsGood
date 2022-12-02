@@ -1,6 +1,6 @@
 package com.getir.readingisgood.service.security;
 
-import com.getir.readingisgood.enums.IConstants;
+import com.getir.readingisgood.enums.Constants;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -16,19 +16,19 @@ public class JWTGenerator {
     public String generateToken(Authentication authentication) {
         String username = authentication.getName();
         Date currentDate = new Date();
-        Date expireDate = new Date(currentDate.getTime() + IConstants.JWT_EXPIRATION);
+        Date expireDate = new Date(currentDate.getTime() + Constants.JWT_EXPIRATION);
 
         return Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(new Date())
                 .setExpiration(expireDate)
-                .signWith(SignatureAlgorithm.HS512, IConstants.JWT_SECRET)
+                .signWith(SignatureAlgorithm.HS512, Constants.JWT_SECRET)
                 .compact();
     }
 
     public String getUsernameFromJWT(String token) {
         Claims claims = Jwts.parser()
-                .setSigningKey(IConstants.JWT_SECRET)
+                .setSigningKey(Constants.JWT_SECRET)
                 .parseClaimsJws(token)
                 .getBody();
         return claims.getSubject();
@@ -36,7 +36,7 @@ public class JWTGenerator {
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(IConstants.JWT_SECRET).parseClaimsJws(token);
+            Jwts.parser().setSigningKey(Constants.JWT_SECRET).parseClaimsJws(token);
             return true;
         } catch (Exception ex) {
             throw new AuthenticationCredentialsNotFoundException("JWT was expired or incorrect !");

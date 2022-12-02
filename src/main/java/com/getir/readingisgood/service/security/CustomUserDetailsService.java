@@ -2,7 +2,7 @@ package com.getir.readingisgood.service.security;
 
 import com.getir.readingisgood.entity.Customer;
 import com.getir.readingisgood.entity.Role;
-import com.getir.readingisgood.repository.customer.ICustomerRepository;
+import com.getir.readingisgood.repository.customer.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final ICustomerRepository customerRepo;
+    private final CustomerRepository customerRepo;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

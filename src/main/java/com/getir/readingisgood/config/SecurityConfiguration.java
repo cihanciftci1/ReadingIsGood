@@ -1,5 +1,6 @@
 package com.getir.readingisgood.config;
 
+import com.getir.readingisgood.enums.ERole;
 import com.getir.readingisgood.service.security.JWTAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -32,6 +33,7 @@ public class SecurityConfiguration{
                 .and()
                 .authorizeRequests()
                 .antMatchers("/customer/auth/**").permitAll() //TODO hasRole çalışmıyor hasAuth çalışıyor araştır
+                .antMatchers("/book/**").hasAuthority(ERole.ADMIN.toString())
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();
