@@ -8,6 +8,6 @@ import lombok.Data;
 @AllArgsConstructor
 @Builder
 public class CreateOrderRequestBooks {
-    private Integer id;
+    private Integer bookId;
     private int quantity;
 }

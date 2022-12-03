@@ -20,9 +20,9 @@ public class OrderController {
         return orderService.createOrder(createOrderRequest);
     }
 
-    @GetMapping("/get/{id}")
-    public BaseResponse getOrder(@PathVariable Long id){
-        return orderService.getById(id);
+    @GetMapping("/get/{orderId}")
+    public BaseResponse getOrderById(@PathVariable Long orderId){
+        return orderService.getById(orderId);
     }
 
     @GetMapping("/getByDate")

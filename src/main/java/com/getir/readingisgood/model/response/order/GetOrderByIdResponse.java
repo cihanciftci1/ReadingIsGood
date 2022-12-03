@@ -10,10 +10,10 @@ import java.util.Map;
 
 @Getter
 @Setter
-public class GetOrderResponse extends BaseResponse {
-    private Map<String,Object> data;
+public class GetOrderByIdResponse extends BaseResponse {
+    private Map<String, OrderDTO> data;
 
-    public GetOrderResponse(String message, OrderDTO orderDTO){
+    public GetOrderByIdResponse(String message, OrderDTO orderDTO){
         super(message);
         this.data = Map.of("order", orderDTO);
         this.setStatus(HttpStatus.OK);

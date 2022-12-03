@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Integer> {
-    Book findByTitle(final String title);
+    boolean existsByTitle(final String title);
+    boolean existsById(final Integer id);
     Book findByIdAndStockGreaterThanEqual(Integer id, int quantity);
 }

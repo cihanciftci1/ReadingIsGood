@@ -1,11 +1,13 @@
 package com.getir.readingisgood.model.request.customer;
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Data
+@Builder
 public class RegisterCustomerRequest {
     @NotBlank
     @Size(max=20)

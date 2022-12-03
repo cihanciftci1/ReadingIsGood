@@ -11,7 +11,7 @@ import java.util.Map;
 @Getter
 @Setter
 public class UpdateBookStockResponse extends BaseResponse {
-    private Map<String,Object> data;
+    private Map<String, BookDTO> data;
 
     public UpdateBookStockResponse(String message, BookDTO book){
         super(message);

@@ -8,7 +8,6 @@ import com.getir.readingisgood.repository.order.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.Tuple;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,14 +18,14 @@ public class StatisticServiceImp implements StatisticService{
 
     @Override
     public BaseResponse getCustomerMonthlyStatistics(final Long id) {
-        List<Tuple> statistics = orderRepository.getCustomerMonthlyStatistics(id);
+        List<List<String>> statistics = orderRepository.getCustomerMonthlyStatistics(id);
         List<StatisticsDTO> statisticsDTOs = new ArrayList<>();
-        for(Tuple tuple : statistics){
+        for(List<String> statistic : statistics){
             statisticsDTOs.add(StatisticsDTO.builder()
-                    .month(tuple.get(0).toString())
-                    .totalOrderCount(tuple.get(1).toString())
-                    .totalBookCount(tuple.get(2).toString())
-                    .totalPurchaseAmount(tuple.get(3).toString())
+                    .month(statistic.get(0).toString())
+                    .totalOrderCount(statistic.get(1).toString())
+                    .totalBookCount(statistic.get(2).toString())
+                    .totalPurchaseAmount(statistic.get(3).toString())
                     .build());
         }
         return new GetCustomerMonthlyStatisticsResponse(Constants.GET_STATISTICS_SUCCESSFUL, statisticsDTOs);

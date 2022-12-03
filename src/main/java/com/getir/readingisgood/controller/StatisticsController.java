@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class StatisticsController {
     private final StatisticService statisticService;
 
-    @GetMapping("/customer/{id}")
-    BaseResponse getCustomerMonthlyStatistics(@PathVariable final Long id){
-        return statisticService.getCustomerMonthlyStatistics(id);
+    @GetMapping("/customer/{customerId}")
+    BaseResponse getCustomerMonthlyStatistics(@PathVariable final Long customerId){
+        return statisticService.getCustomerMonthlyStatistics(customerId);
     }
 
 }

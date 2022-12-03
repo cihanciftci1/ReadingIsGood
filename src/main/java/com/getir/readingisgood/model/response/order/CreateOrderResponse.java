@@ -11,7 +11,7 @@ import java.util.Map;
 @Getter
 @Setter
 public class CreateOrderResponse extends BaseResponse {
-    private Map<String,Object> data;
+    private Map<String, OrderDTO> data;
 
     public CreateOrderResponse(String message, OrderDTO orderDTO){
         super(message);

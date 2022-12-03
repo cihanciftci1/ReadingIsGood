@@ -14,8 +14,6 @@ import com.getir.readingisgood.repository.book.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
-
 @Service
 @RequiredArgsConstructor
 public class BookServiceImp implements BookService{
@@ -23,7 +21,7 @@ public class BookServiceImp implements BookService{
 
     @Override
     public BaseResponse create(final CreateBookRequest createBookRequest){
-        if(Objects.nonNull(bookRepository.findByTitle(createBookRequest.getTitle()))){
+        if(bookRepository.existsByTitle(createBookRequest.getTitle())){
             return new BadRequestErrorResponse(Constants.BOOK_ALREADY_EXISTS);
         }
         if(createBookRequest.getStock()<= 0){
@@ -50,19 +48,19 @@ public class BookServiceImp implements BookService{
         if(updateBookStockRequest.getStock()<= 0){
             return new BadRequestErrorResponse(Constants.BOOK_STOCK_CANT_BE_NEGATIVE);
         }
-        if(bookRepository.findById(updateBookStockRequest.getId()).isEmpty()){
+        if(!bookRepository.existsById(updateBookStockRequest.getBookId())){
             return new NotFoundErrorResponse(Constants.BOOK_NOT_FOUND);
         }
 
-        Book updatedBook = bookRepository.findById(updateBookStockRequest.getId()).get();
-        updatedBook.setStock(updateBookStockRequest.getStock());
-        bookRepository.save(updatedBook);
+        Book book = bookRepository.findById(updateBookStockRequest.getBookId()).get();
+        book.setStock(updateBookStockRequest.getStock());
+        bookRepository.save(book);
 
         return new UpdateBookStockResponse(Constants.BOOK_STOCK_UPDATED_SUCCESSFULLY,
                 BookDTO.builder()
-                        .title(updatedBook.getTitle())
-                        .stock(updatedBook.getStock())
-                        .price(updatedBook.getPrice())
+                        .title(book.getTitle())
+                        .stock(book.getStock())
+                        .price(book.getPrice())
                         .build());
     }
 

@@ -14,7 +14,7 @@ import com.getir.readingisgood.model.response.errors.BadRequestErrorResponse;
 import com.getir.readingisgood.model.response.errors.NotFoundErrorResponse;
 import com.getir.readingisgood.model.response.order.CreateOrderResponse;
 import com.getir.readingisgood.model.response.order.GetOrderByDateResponse;
-import com.getir.readingisgood.model.response.order.GetOrderResponse;
+import com.getir.readingisgood.model.response.order.GetOrderByIdResponse;
 import com.getir.readingisgood.repository.customer.CustomerRepository;
 import com.getir.readingisgood.repository.order.BookOrderRepository;
 import com.getir.readingisgood.repository.order.OrderRepository;
@@ -47,10 +47,10 @@ public class OrderServiceImp implements OrderService{
 
         List<BookOrder> responseBooks = new ArrayList<>();
 
-        for(CreateOrderRequestBooks requestBook : createOrderRequest.getOrderBooks()){
-            Book book = bookService.findByIdAndCheckStock(requestBook.getId(), requestBook.getQuantity());
+        for(CreateOrderRequestBooks requestBook : createOrderRequest.getRequestBooks()){
+            Book book = bookService.findByIdAndCheckStock(requestBook.getBookId(), requestBook.getQuantity());
             if(Objects.isNull(book)){
-                return new NotFoundErrorResponse("Book id : "+ requestBook.getId() + " - " + Constants.BOOKS_NOT_FOUND_OR_INSUFFICIENT_QUANTITY);
+                return new NotFoundErrorResponse("Book id : "+ requestBook.getBookId() + " - " + Constants.BOOKS_NOT_FOUND_OR_INSUFFICIENT_QUANTITY);
             }
             if(requestBook.getQuantity()<1){
                 return new BadRequestErrorResponse(Constants.ORDER_QUANTITY_CANT_BE_NEGATIVE);
@@ -106,7 +106,7 @@ public class OrderServiceImp implements OrderService{
 
         List<BookOrder> bookOrders = bookOrderRepository.findByOrderId(order.get().getId());
 
-        return new GetOrderResponse(Constants.GET_ORDER_SUCCESSFUL,
+        return new GetOrderByIdResponse(Constants.GET_ORDER_SUCCESSFUL,
                 OrderDTO.builder()
                         .customerEmail(customer.get().getEmail())
                         .bookOrders(bookOrders)
@@ -131,6 +131,10 @@ public class OrderServiceImp implements OrderService{
         for(Order order : orders){
             Optional<Customer> customer = customerRepository.findById(order.getCustomerId());
 
+            if(customer.isEmpty()){
+                return new NotFoundErrorResponse(Constants.CUSTOMER_NOT_FOUND + " -> with customer id : " + order.getCustomerId());
+            }
+
             List<BookOrder> bookOrders = bookOrderRepository.findByOrderId(order.getId());
 
             OrderDTO orderDTO = OrderDTO.builder()
@@ -146,8 +150,8 @@ public class OrderServiceImp implements OrderService{
     }
 
     @Override
-    public List<OrderDTO> getOrdersByCustomerId(final Long id, final Pageable page) {
-        List<Order> orders = orderRepository.findAllByCustomerId(id, page);
+    public List<OrderDTO> getOrdersByCustomerId(final Long customerId, final Pageable page) {
+        List<Order> orders = orderRepository.findAllByCustomerId(customerId, page);
 
         List<OrderDTO> orderDTOs = new ArrayList<>();
 

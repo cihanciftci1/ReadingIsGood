@@ -13,5 +13,5 @@ public interface OrderService {
     BaseResponse createOrder(final CreateOrderRequest createOrderRequest);
     BaseResponse getById(final Long id);
     BaseResponse getByDate(final GetOrderByDateRequest getOrderByDateRequest);
-    List<OrderDTO> getOrdersByCustomerId(final Long id, Pageable page);
+    List<OrderDTO> getOrdersByCustomerId(final Long customerId, Pageable page);
 }

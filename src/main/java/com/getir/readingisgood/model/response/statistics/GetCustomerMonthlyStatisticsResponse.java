@@ -11,7 +11,7 @@ import java.util.Map;
 @Getter
 @Setter
 public class GetCustomerMonthlyStatisticsResponse extends BaseResponse {
-    private Map<String,Object> data;
+    private Map<String, List<StatisticsDTO>> data;
 
     public GetCustomerMonthlyStatisticsResponse(String message, List<StatisticsDTO> statisticsDTOs){
         super(message);

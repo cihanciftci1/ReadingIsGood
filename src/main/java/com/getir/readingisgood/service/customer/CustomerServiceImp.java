@@ -14,6 +14,7 @@ import com.getir.readingisgood.model.response.customer.LoginCustomerResponse;
 import com.getir.readingisgood.model.response.customer.RegisterCustomerResponse;
 import com.getir.readingisgood.model.response.errors.AuthenticationErrorResponse;
 import com.getir.readingisgood.model.response.errors.BadRequestErrorResponse;
+import com.getir.readingisgood.model.response.errors.NotFoundErrorResponse;
 import com.getir.readingisgood.repository.customer.CustomerRepository;
 import com.getir.readingisgood.service.order.OrderService;
 import com.getir.readingisgood.service.role.RoleService;
@@ -31,7 +32,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -52,7 +52,7 @@ public class CustomerServiceImp implements CustomerService{
             return new BadRequestErrorResponse(Constants.EMAIL_ALREADY_TAKEN);
         }
 
-        Role role = roleService.findByName(ERole.USER).get();
+        Role role = roleService.findByName(ERole.USER);
 
         Customer customer = Customer.builder()
                 .username(registerCustomerRequest.getUsername())
@@ -81,11 +81,6 @@ public class CustomerServiceImp implements CustomerService{
     }
 
     @Override
-    public Optional<Customer> findById(final Long id){
-        return customerRepository.findById(id);
-    }
-
-    @Override
     public BaseResponse getCustomerOrders(final GetCustomerOrdersRequest getCustomerOrdersRequest) {
         Long id = getCustomerOrdersRequest.getCustomerId();
         int pageIndex = Objects.nonNull(getCustomerOrdersRequest.getPageIndex()) ? getCustomerOrdersRequest.getPageIndex() : 0;
@@ -96,7 +91,7 @@ public class CustomerServiceImp implements CustomerService{
         List<OrderDTO> orderDTOs = orderService.getOrdersByCustomerId(id, page);
 
         if(orderDTOs.isEmpty()){
-            return new BaseResponse(Constants.ORDER_NOT_FOUND);
+            return new NotFoundErrorResponse(Constants.ORDER_NOT_FOUND);
         }
 
 
