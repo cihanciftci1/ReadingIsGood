@@ -1,39 +1,30 @@
 package com.getir.readingisgood.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.getir.readingisgood.enums.Constants;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
-import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Entity
-@Table(name = "book")
+@Table(name = "orders")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Builder
-public class Book {
+public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    @NotBlank
-    @Size(max=80)
-    @Column(unique = true)
-    private String title;
-    @NotNull
-    private double price;
-    @NotNull
-    @PositiveOrZero(message = Constants.BOOK_STOCK_CANT_BE_NEGATIVE)
-    private int stock;
+    private Long customerId;
+
+    private int bookCount;
+
+    private double totalAmount;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private Date createdDate;
@@ -41,13 +32,11 @@ public class Book {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private Date updatedDate;
 
-
     @PrePersist
     private void whenCreate(){
         createdDate = new Date();
         updatedDate = new Date();
     }
-
 
     @PreUpdate
     private void whenUpdate(){

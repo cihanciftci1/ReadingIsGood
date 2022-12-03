@@ -6,7 +6,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Data
-public class CustomerLoginRequest {
+public class LoginCustomerRequest {
     @NotBlank
     @Size(max=20)
     private String username;

@@ -32,8 +32,11 @@ public class SecurityConfiguration{
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/customer/auth/**").permitAll() //TODO hasRole çalışmıyor hasAuth çalışıyor araştır
+                .antMatchers("/customer/auth/**").permitAll()
+                .antMatchers("/customer/**").hasAnyAuthority(ERole.ADMIN.toString(), ERole.USER.toString())
                 .antMatchers("/book/**").hasAuthority(ERole.ADMIN.toString())
+                .antMatchers("/order/**").hasAnyAuthority(ERole.ADMIN.toString(), ERole.USER.toString())
+                .antMatchers("/statistics/**").hasAnyAuthority(ERole.ADMIN.toString(), ERole.USER.toString())
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();

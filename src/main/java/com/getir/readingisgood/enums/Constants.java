@@ -8,10 +8,17 @@ public interface Constants {
     String EMAIL_ALREADY_TAKEN = "Email is already taken !";
     String REGISTER_SUCCESSFUL = "User registered successfully !";
     String LOGIN_FAILED = "Username or password is wrong !";
-    String LOGIN_SUCCESFULL = "Login successful !";
+    String LOGIN_SUCCESFUL = "Login successful !";
     String BOOK_ALREADY_EXISTS = "Book already exists !";
     String BOOK_CREATED_SUCCESSFULLY = "Book created successfully !";
     String BOOK_STOCK_CANT_BE_NEGATIVE = "Stock amount can not be a negative number !";
     String BOOK_NOT_FOUND = "Book not found !";
-    String BOOK_STOCK_UPDATED_SUCCESFULLY = "Book stock updated successfully !";
+    String BOOK_STOCK_UPDATED_SUCCESSFULLY = "Book stock updated successfully !";
+    String CUSTOMER_NOT_FOUND = "Customer not found !";
+    String BOOKS_NOT_FOUND_OR_INSUFFICIENT_QUANTITY = "Book not found or insufficient quantity !";
+    String ORDER_QUANTITY_CANT_BE_NEGATIVE = "Order quantity can not be a negative number !";
+    String ORDER_CREATED_SUCCESSFULLY = "Order created successfully !";
+    String ORDER_NOT_FOUND = "Order not found !";
+    String GET_ORDER_SUCCESSFUL = "Get order successful !";
+    String GET_STATISTICS_SUCCESSFUL = "Get statistics successful !";
 }
