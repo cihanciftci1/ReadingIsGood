@@ -1,7 +1,7 @@
 package com.getir.readingisgood.enums;
 
 public interface Constants {
-    long JWT_EXPIRATION = 700000;
+    long JWT_EXPIRATION = 900000; //15 mins
     String JWT_SECRET = "prometheus";
     String JWT_TOKEN_TYPE = "Bearer";
     String USERNAME_ALREADY_TAKEN = "Username is already taken !";
@@ -21,4 +21,5 @@ public interface Constants {
     String ORDER_NOT_FOUND = "Order not found !";
     String GET_ORDER_SUCCESSFUL = "Get order successful !";
     String GET_STATISTICS_SUCCESSFUL = "Get statistics successful !";
+    String STATISTICS_NOT_FOUND = "Statistics not found !";
 }

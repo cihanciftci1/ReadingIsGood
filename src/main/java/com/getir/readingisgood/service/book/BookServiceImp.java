@@ -31,7 +31,7 @@ public class BookServiceImp implements BookService{
         if(bookRepository.existsByTitle(createBookRequest.getTitle())){
             return new BadRequestErrorResponse(Constants.BOOK_ALREADY_EXISTS);
         }
-        if(createBookRequest.getStock()<= 0){
+        if(createBookRequest.getStock()< 0){
             return new BadRequestErrorResponse(Constants.BOOK_STOCK_CANT_BE_NEGATIVE);
         }
         Book book = Book.builder()

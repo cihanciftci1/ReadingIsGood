@@ -32,12 +32,13 @@ public class SecurityConfiguration{
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/customer/auth/**").permitAll()
-                .antMatchers("/customer/**").hasAnyAuthority(ERole.ADMIN.toString(), ERole.USER.toString())
-                .antMatchers("/book/**").hasAuthority(ERole.ADMIN.toString())
-                .antMatchers("/order/**").hasAnyAuthority(ERole.ADMIN.toString(), ERole.USER.toString())
-                .antMatchers("/statistics/**").hasAnyAuthority(ERole.ADMIN.toString(), ERole.USER.toString())
-                .anyRequest().authenticated()
+                .antMatchers("/v2/api-docs").permitAll()          //for swagger
+                .antMatchers("/v3/api-docs").permitAll()          //for swagger
+                .antMatchers("/swagger-ui/**").permitAll()        //for swagger
+                .antMatchers("/swagger-resources/**").permitAll() //for swagger
+                .antMatchers("/webjars/**").permitAll()           //for swagger
+                .antMatchers("/customer/auth/**").permitAll()     //for customer register and login
+                .anyRequest().authenticated()                                //other endpoints are secured
                 .and()
                 .httpBasic();
 
