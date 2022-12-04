@@ -1,6 +1,6 @@
 # ReadingIsGood
 
-ReadingIsGood is an online book selling application. Developed with below techs : 
+ReadingIsGood is an online book selling application backend project. Developed with below techs : 
 - JDK 17
 - Spring Boot
 - MySQL Database
@@ -10,7 +10,7 @@ ReadingIsGood is an online book selling application. Developed with below techs 
 - Lombok
 
 ## Setup
-- Install Java 17 and set JAVA_HOME as enviroment variable.
+- Install Java 17+.
 - Install Docker and start the application
 ### To Run
 - Run "mvn clean install" in terminal
