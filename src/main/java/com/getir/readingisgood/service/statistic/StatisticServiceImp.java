@@ -3,6 +3,7 @@ package com.getir.readingisgood.service.statistic;
 import com.getir.readingisgood.dto.StatisticsDTO;
 import com.getir.readingisgood.enums.Constants;
 import com.getir.readingisgood.model.response.BaseResponse;
+import com.getir.readingisgood.model.response.errors.NotFoundErrorResponse;
 import com.getir.readingisgood.model.response.statistics.GetCustomerMonthlyStatisticsResponse;
 import com.getir.readingisgood.repository.order.OrderRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,9 @@ public class StatisticServiceImp implements StatisticService{
     @Override
     public BaseResponse getCustomerMonthlyStatistics(final Long id) {
         List<List<String>> statistics = orderRepository.getCustomerMonthlyStatistics(id);
+        if(statistics.isEmpty()){
+            return new NotFoundErrorResponse(Constants.STATISTICS_NOT_FOUND);
+        }
         List<StatisticsDTO> statisticsDTOs = new ArrayList<>();
         for(List<String> statistic : statistics){
             statisticsDTOs.add(StatisticsDTO.builder()
