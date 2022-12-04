@@ -20,14 +20,20 @@ import com.getir.readingisgood.repository.order.BookOrderRepository;
 import com.getir.readingisgood.repository.order.OrderRepository;
 import com.getir.readingisgood.service.book.BookService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class OrderServiceImp implements OrderService{
+    private static final Logger logger = LoggerFactory.getLogger(OrderServiceImp.class);
     private final OrderRepository orderRepository;
     private final BookOrderRepository bookOrderRepository;
     private final CustomerRepository customerRepository;
@@ -40,6 +46,16 @@ public class OrderServiceImp implements OrderService{
             return new NotFoundErrorResponse(Constants.CUSTOMER_NOT_FOUND);
         }
 
+        for(CreateOrderRequestBooks requestBook : createOrderRequest.getRequestBooks()) { //TODO I don't use exception here because of that I cant rollback, thats why there are 2 for loops and 1 of them is for check requested books
+            Book book = bookService.findByIdAndCheckStock(requestBook.getBookId(), requestBook.getQuantity());
+            if (Objects.isNull(book)) {
+                return new NotFoundErrorResponse("Book id : " + requestBook.getBookId() + " - " + Constants.BOOKS_NOT_FOUND_OR_INSUFFICIENT_QUANTITY);
+            }
+            if (requestBook.getQuantity() < 1) {
+                return new BadRequestErrorResponse(Constants.ORDER_QUANTITY_CANT_BE_NEGATIVE);
+            }
+        }
+
         double amount = 0.0;
         int bookCount=0;
 
@@ -49,13 +65,6 @@ public class OrderServiceImp implements OrderService{
 
         for(CreateOrderRequestBooks requestBook : createOrderRequest.getRequestBooks()){
             Book book = bookService.findByIdAndCheckStock(requestBook.getBookId(), requestBook.getQuantity());
-            if(Objects.isNull(book)){
-                return new NotFoundErrorResponse("Book id : "+ requestBook.getBookId() + " - " + Constants.BOOKS_NOT_FOUND_OR_INSUFFICIENT_QUANTITY);
-            }
-            if(requestBook.getQuantity()<1){
-                return new BadRequestErrorResponse(Constants.ORDER_QUANTITY_CANT_BE_NEGATIVE);
-            }
-
             BookOrder bookOrder = BookOrder.builder()
                     .title(book.getTitle())
                     .price(book.getPrice())
@@ -66,7 +75,6 @@ public class OrderServiceImp implements OrderService{
                     .build();
 
             bookOrderRepository.save(bookOrder);
-
 
             book.setStock(book.getStock()-requestBook.getQuantity());
 
@@ -81,6 +89,7 @@ public class OrderServiceImp implements OrderService{
         order.setBookCount(bookCount);
 
         orderRepository.save(order);
+        logger.info("Order created by customer id : {} at {} -> {}",customer.get().getId(), LocalDateTime.now(), order);
 
         return new CreateOrderResponse(Constants.ORDER_CREATED_SUCCESSFULLY,
                 OrderDTO.builder()
@@ -94,15 +103,11 @@ public class OrderServiceImp implements OrderService{
 
     @Override
     public BaseResponse getById(final Long id){
-        Optional<Customer> customer = customerRepository.findById(id);
-        if(customer.isEmpty()){
-            return new NotFoundErrorResponse(Constants.CUSTOMER_NOT_FOUND);
-        }
-
         Optional<Order> order = orderRepository.findById(id);
         if(order.isEmpty()){
             return new NotFoundErrorResponse(Constants.ORDER_NOT_FOUND);
         }
+        Optional<Customer> customer = customerRepository.findById(order.get().getCustomerId());
 
         List<BookOrder> bookOrders = bookOrderRepository.findByOrderId(order.get().getId());
 

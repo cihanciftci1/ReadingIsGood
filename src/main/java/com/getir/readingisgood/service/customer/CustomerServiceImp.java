@@ -20,6 +20,9 @@ import com.getir.readingisgood.service.order.OrderService;
 import com.getir.readingisgood.service.role.RoleService;
 import com.getir.readingisgood.service.security.JWTGenerator;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -30,13 +33,17 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CustomerServiceImp implements CustomerService{
+    private static final Logger logger = LoggerFactory.getLogger(CustomerServiceImp.class);
     private final CustomerRepository customerRepository;
     private final AuthenticationManager authenticationManager;
     private final RoleService roleService;
@@ -62,6 +69,7 @@ public class CustomerServiceImp implements CustomerService{
                 .build();
 
         customerRepository.save(customer);
+        logger.info("{} registered at {}", customer, LocalDateTime.now());
 
         return new RegisterCustomerResponse(Constants.REGISTER_SUCCESSFUL);
     }
@@ -83,6 +91,12 @@ public class CustomerServiceImp implements CustomerService{
     @Override
     public BaseResponse getCustomerOrders(final GetCustomerOrdersRequest getCustomerOrdersRequest) {
         Long id = getCustomerOrdersRequest.getCustomerId();
+
+        Optional<Customer> customer = customerRepository.findById(id);
+        if(customer.isEmpty()){
+            return new NotFoundErrorResponse(Constants.CUSTOMER_NOT_FOUND);
+        }
+
         int pageIndex = Objects.nonNull(getCustomerOrdersRequest.getPageIndex()) ? getCustomerOrdersRequest.getPageIndex() : 0;
         int pageSize = Objects.nonNull(getCustomerOrdersRequest.getPageSize()) ? getCustomerOrdersRequest.getPageSize() : 10;
 

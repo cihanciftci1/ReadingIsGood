@@ -12,12 +12,19 @@ import com.getir.readingisgood.model.response.errors.BadRequestErrorResponse;
 import com.getir.readingisgood.model.response.errors.NotFoundErrorResponse;
 import com.getir.readingisgood.repository.book.BookRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class BookServiceImp implements BookService{
     private final BookRepository bookRepository;
+    private static final Logger logger = LoggerFactory.getLogger(BookServiceImp.class);
 
     @Override
     public BaseResponse create(final CreateBookRequest createBookRequest){
@@ -34,6 +41,7 @@ public class BookServiceImp implements BookService{
                 .build();
 
         bookRepository.save(book);
+        logger.info("{} inserted by admin at {}", book, LocalDateTime.now());
 
         return new CreateBookResponse(Constants.BOOK_CREATED_SUCCESSFULLY,
                 BookDTO.builder()
@@ -45,7 +53,7 @@ public class BookServiceImp implements BookService{
 
     @Override
     public BaseResponse updateStock(final UpdateBookStockRequest updateBookStockRequest){
-        if(updateBookStockRequest.getStock()<= 0){
+        if(updateBookStockRequest.getStock() < 0){
             return new BadRequestErrorResponse(Constants.BOOK_STOCK_CANT_BE_NEGATIVE);
         }
         if(!bookRepository.existsById(updateBookStockRequest.getBookId())){
@@ -55,6 +63,7 @@ public class BookServiceImp implements BookService{
         Book book = bookRepository.findById(updateBookStockRequest.getBookId()).get();
         book.setStock(updateBookStockRequest.getStock());
         bookRepository.save(book);
+        logger.info("Book stock updated by admin for {} at {}", book, LocalDateTime.now());
 
         return new UpdateBookStockResponse(Constants.BOOK_STOCK_UPDATED_SUCCESSFULLY,
                 BookDTO.builder()
