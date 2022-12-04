@@ -50,7 +50,7 @@ class StatisticsControllerTest {
 
         //when
         when(statisticService.getCustomerMonthlyStatistics(customerId)).thenReturn(expectedResponse);
-        final ResultActions actions = mockMvc.perform(get("/statistics/customer/{customerId}", customerId));
+        final ResultActions actions = mockMvc.perform(get("/statistics/customers/{customerId}", customerId));
 
         //then
         actions.andExpect(status().isOk())

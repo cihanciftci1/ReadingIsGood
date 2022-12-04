@@ -23,6 +23,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -87,6 +88,12 @@ class CustomerServiceTest {
                 .pageSize(10)
                 .build();
 
+        Optional<Customer> customer = Optional.of(Customer.builder()
+                .id(1L)
+                .email("email")
+                .username("username")
+                .build());
+
         OrderDTO orderDTO = OrderDTO.builder()
                 .totalAmount(1)
                 .bookCount(1)
@@ -99,6 +106,7 @@ class CustomerServiceTest {
 
         //when
         when(orderService.getOrdersByCustomerId(any(Long.class), any(Pageable.class))).thenReturn(orderDTOs);
+        when(customerRepository.findById(any(Long.class))).thenReturn(customer);
         BaseResponse actualResponse = customerService.getCustomerOrders(getCustomerOrdersRequest);
 
         //then

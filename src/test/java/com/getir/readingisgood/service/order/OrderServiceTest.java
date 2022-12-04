@@ -111,7 +111,7 @@ class OrderServiceTest {
     }
 
     @Test
-    void order_service_get_order_by_id_should_return_order(){
+    void order_service_get_by_id_should_return_order(){
         //given
         Long orderId = 1L;
 
@@ -125,6 +125,7 @@ class OrderServiceTest {
                 .id(1L)
                 .bookCount(1)
                 .totalAmount(1)
+                .customerId(1L)
                 .build());
 
         BookOrder bookOrder = BookOrder.builder()

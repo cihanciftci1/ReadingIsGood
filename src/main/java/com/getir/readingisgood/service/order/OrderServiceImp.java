@@ -46,7 +46,7 @@ public class OrderServiceImp implements OrderService{
             return new NotFoundErrorResponse(Constants.CUSTOMER_NOT_FOUND);
         }
 
-        for(CreateOrderRequestBooks requestBook : createOrderRequest.getRequestBooks()) { //TODO I don't use exception here because of that I cant rollback, thats why there are 2 for loops and 1 of them is for check requested books
+        for(CreateOrderRequestBooks requestBook : createOrderRequest.getRequestBooks()) { //TODO 2 loops for same list, fix later
             Book book = bookService.findByIdAndCheckStock(requestBook.getBookId(), requestBook.getQuantity());
             if (Objects.isNull(book)) {
                 return new NotFoundErrorResponse("Book id : " + requestBook.getBookId() + " - " + Constants.BOOKS_NOT_FOUND_OR_INSUFFICIENT_QUANTITY);
