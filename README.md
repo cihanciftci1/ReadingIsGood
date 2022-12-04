@@ -19,7 +19,7 @@ ReadingIsGood is an online book selling application. Developed with below techs 
 - Press CTRL+C in terminal
 - Run "docker-compose down" in terminal
 
-## Entities
+## Entities and Fields
 
 - Customer : username, password, email, created date and updated date
 - Book : title, price, stock, created date and updated date
