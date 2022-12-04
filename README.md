@@ -32,7 +32,7 @@ ReadingIsGood is an online book selling application. Developed with below techs 
 ## Controllers
 
 ### About Controllers
-- Postman Collection is added. You can send request and see request/response bodies once you run the application.
+- Postman Collection is added to root directory. You can send request and see request/response bodies once you run the application.
 
 - All endpoints are secured. So first you need to register and then you can login with your username and password. You will receieve a token with "Bearer" prefix. When you send a request to other APIs you must use that token with "Authorization" key in the Headers. 
 
