@@ -10,7 +10,6 @@ ReadingIsGood is an online book selling application backend project. Developed w
 - Lombok
 
 ## Setup
-- Install Java 17+.
 - Install Docker and start the application
 ### To Run
 - Run "mvn clean install" in terminal
