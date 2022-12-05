@@ -8,6 +8,7 @@ ReadingIsGood is an online book selling application backend project. Developed w
 - Spring Security - JWT
 - Swagger
 - Lombok
+- Docker
 
 ## Setup
 - Install Docker and start the application
