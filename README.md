@@ -38,7 +38,7 @@ ReadingIsGood is an online book selling application backend project. Developed w
 
 - First I designed like only admins can create book and update book stock. But it was kinda hard to test every single time because you need to give ADMIN role from db. So currently every API needs only user role. And user role is default for customer register. If you want to add an admin you need add with user id(customer) and role id from user_roles table in db.
 
-- In the case description it says that I need to create success and error responses, so app does not throw exception for errors instead returns error responses.
+- In the case description it says that success and error responses are needed, so app does not throw exception for errors instead returns error responses.
 ### Customer Controller
 
 #### Register
