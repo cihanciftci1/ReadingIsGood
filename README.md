@@ -34,7 +34,7 @@ ReadingIsGood is an online book selling application backend project. Developed w
 ### About Controllers
 - Postman Collection is added to root directory. You can send request once you run the application and see request/response bodies.
 
-- All endpoints are secured. So first you need to register and then you can login with your username and password. You will receieve a token with "Bearer" prefix. When you send a request to other APIs you must use that token with "Authorization" key in the Headers. 
+- All endpoints are secured. So first you need to register and then you can login with your username and password. You will receieve a token with "Bearer" prefix. When you send a request to other APIs you must use that token with "Authorization" key in the Headers. Token expires after 15 mins.
 
 - First I designed like only admins can create book and update book stock. But it was kinda hard to test every single time because you need to give ADMIN role from db. So currently every API needs only user role. And user role is default for customer register. If you want to add an admin you need add with user id(customer) and role id from user_roles table in db.
 
